@@ -26,15 +26,19 @@ void reset() {
   for (int i=0; i<many; i++ ) {school[i]= new Squid( names[i], x ); x += spacing;}  
   for (int i=0; i<alot; i++) {fleet[i]=   new Boat( titles[i], 100);}
 }
-
+///Next Frames
  void draw() {
-    scene();
-    action();
-    show();
-   
+  scene();
+ if (key >= 'A' && key <= 'Z') {
+    manifest(fleet, fleet.length);
+    ecology( school, school.length);
+  }
+  else 
+  action();
+  show();
+  
  }
  
-
 void scene() {
   background( 0,150,200 );      
   fill( 0,50,100 );
@@ -53,11 +57,61 @@ void show() {
   for (int i=0; i<alot; i++ ) { fleet[i].show();}
 }
 
+///List arrays
+void manifest(  Boat[] n, int alot ) {
+  fill(#A7B9BC);
+  rect( width/5, 65, 300, 110 );
+  float x=190, y=100;
+  // Labels.
+  fill(150,0,0);
+  text( "BOAT", x+20, y );
+  text( "storage", x+65, y );
+  text( "x", x+115, y );
+  text( "dx", x+205, y );
+  fill(0);
+  //
+ for(int i=0; i<alot; i++){
+  y += 15;
+  text( i, x, y );
+  text( n[i].name, x+20, y );
+  text( n[i].storage, x+70, y );
+  text( n[i].x, x+100, y );
+  text( n[i].dx, x+200, y );
+ }
+}
+ void ecology( Squid[] w, int many) {
+    fill(#A7B9BC);
+  rect( width/5, 365, 330, 120 );
+  float x=190, y=395;
+  // Labels.
+  fill(150,0,0);
+  text( "Names", x+20, y );
+  text( "Legs", x+65, y );
+  text( "x", x+115, y );
+  text( "y", x+165, y );
+  text( "dy", x+225, y );
+  fill(0);
+  //
+ for(int i=0; i<many; i++){
+  y += 15;
+  text( i, x, y );
+  text( w[i].name, x+20, y );
+  text( w[i].legs, x+70, y );
+  text( w[i].x, x+100, y );
+  text( w[i].y, x+165, y );
+  text( w[i].dy, x+225, y );
+ }
+}
+ 
    
 
 
 
+   
 
+
+
+////Classes
 class Squid {
   float x,y;
   float dx=0, dy=0; 
@@ -89,6 +143,7 @@ class Squid {
      if (y>height) {bottom(); count++; }
      else if (y<surface) { dy= -3 * dy; }
    }
+
 ///display
  void show() {
    fill(r,g,b);
@@ -111,7 +166,9 @@ class Squid {
     text( legs, x+2-w/5, y+h/3 ); 
     fill(255); 
   } 
+ boolean hit( float xx, float yy ) {return dist( xx,yy, x,y ) < h;}
 }
+
 
 class Boat {
   float x, y=surface;
@@ -132,7 +189,12 @@ class Boat {
  }
  
   void move() {
-   x+=dx;
+   int hooked=0;
+   for (int i=0; i<many; i++ ) {
+   if (school[i].hit( x, surface )) {hooked += school[i].legs; school[i].bottom();}
+    }
+    storage += hooked;    
+    x+=dx;
    if (x<0 || x>width) {dx *= -1;}
  }
 
@@ -147,9 +209,10 @@ class Boat {
     if (dx>0)   {rect( x-15, surface-40, 25, 10 );}
     else        {rect( x+20, surface-40, 25, 10);}
     fill(255); 
+    strokeWeight(3);
     text( name, x+5, surface-10 ); 
     fill(0); 
-    if (storage>0) text( storage, x+20, surface ); 
+    text( storage, x+30, surface); 
  }
 }
    
