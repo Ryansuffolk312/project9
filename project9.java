@@ -4,8 +4,11 @@
 int many=5;
 int alot=4;
 Squid school[]=  new Squid[many];
+Boat  fleet[]=   new Boat[alot];
 String names[]=  { "Cali", "Mari", "Bloop", "Ward", "Tenta"};
+String titles[]= {"RedL", "JackD", "RivR", "Spira"};
 float spacing;
+float ocean;
 
 float surface;
 int score=0;
@@ -20,10 +23,8 @@ void setup() {
 void reset() {
   surface=  width/3;
   float x=  spacing;
-  for (int i=0; i<many; i++ ) {
-    school[i]=  new Squid( names[i], x );
-    x += spacing;
-  }
+  for (int i=0; i<many; i++ ) {school[i]= new Squid( names[i], x ); x += spacing;}  
+  for (int i=0; i<alot; i++) {fleet[i]=   new Boat( titles[i], 100);}
 }
 
  void draw() {
@@ -42,18 +43,14 @@ void scene() {
 }
 
 void action() {
-  for (int i=0; i<many; i++ ) {
-    school[i].move();
-  }
+  for (int i=0; i<many; i++ ) {school[i].move(); }
+  for (int i=0; i<alot; i++) {fleet[i].move();}
 }
 
 void show() {
   float x=  spacing;
-  for (int i=0; i<many; i++ ) {
-    school[i].x=  x;
-    x += spacing;
-    school[i].show();
-  }
+  for (int i=0; i<many; i++ ) {school[i].x= x; x += spacing; school[i].show();}
+  for (int i=0; i<alot; i++ ) { fleet[i].show();}
 }
 
    
@@ -94,8 +91,6 @@ class Squid {
    }
 ///display
  void show() {
-   
-   text(legs, x-10, y + 10);
    fill(r,g,b);
    stroke(r,g,b);
    ellipse(x,y, 40, 30);
@@ -108,11 +103,60 @@ class Squid {
      line(legX, y+20, legX-10, y+35);
      legX += 10;
    }
-    strokeWeight(1);
     stroke(0);
-}
+    strokeWeight(3); 
+    fill(200,200,0); 
+    text( name, x-w/3, y-10+h/4 ); 
+    fill(0); 
+    text( legs, x+2-w/5, y+h/3 ); 
+    fill(255); 
+  } 
 }
 
+class Boat {
+  float x, y=surface;
+  float dx, dy;
+  int storage=0, hooked=0;
+  String name= "";
+  float r,g,b;
+///Constructor   
+  Boat( String f, float x) {
+    this.name= f;
+    this.x= x;
+    ///
+    r= int(random(0, 255));
+    g= int(random(100, 100));
+    b= int(random(100, 250));
+    ///
+    dx= random(1,4);
+ }
+ 
+  void move() {
+   x+=dx;
+   if (x<0 || x>width) {dx *= -1;}
+ }
+
+ void show() {
+    fill(r,g,b);
+    rect( x, surface-20, 50, 20 ); 
+    if (dx>0)   {triangle( x+50,surface, x+50,surface-20, x+70,surface-20 );} 
+    else        {triangle( x,surface, x,surface-20, x-20,surface-20 );} 
+    rect( x+12, surface-30, 5, 10 );       
+    ///sails
+    fill(255); 
+    if (dx>0)   {rect( x-15, surface-40, 25, 10 );}
+    else        {rect( x+20, surface-40, 25, 10);}
+    fill(255); 
+    text( name, x+5, surface-10 ); 
+    fill(0); 
+    if (storage>0) text( storage, x+20, surface ); 
+ }
+}
+   
+
+   
+   
+  
   
 
 
