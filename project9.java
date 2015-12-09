@@ -80,7 +80,7 @@ void manifest(  Boat[] n, int alot ) {
   // Labels.
   fill(150,0,0);
   text( "BOAT", x+20, y );
-  text( "storage", x+65, y );
+  text( "Storage", x+65, y );
   text( "x", x+115, y );
   text( "dx", x+205, y );
   fill(0);
@@ -118,72 +118,7 @@ void manifest(  Boat[] n, int alot ) {
  }
 }
  
-   
-
-
-
-   
-
-
-
-////Classes
-class Squid {
-  float x,y;
-  float dx=0, dy=0; 
-  float w=40, h=40;
-  int legs=10; 
-  String name= "";
-  float r,g,b;
-  int count=0;
-///Constructors
- Squid( String s, float x) {
-    this.name= s;
-    this.x=x;
-    bottom();
-    ///
-    r= int(random(100, 255));
-    g= int(random(0, 100));
-    b= int(random(100, 250));
- }
- ///
-  void bottom(){
-    y= height - h;
-    dy= -random( 0.1, 0.9);
-    legs= int( random(1,6));
-  }
-   void move() {
-     count++;
-     x += dx;
-     y += dy;
-     if (y>height) {bottom(); count++; }
-     else if (y<surface) { dy= -3 * dy; }
-   }
-
-///display
- void show() {
-   fill(r,g,b);
-   stroke(r,g,b);
-   ellipse(x,y, 40, 30);
-   rect( x-40/2, y, 40, 30/2);
-///legs
-   stroke(r,g,b);
-   strokeWeight(3);
-   float legX = x-20;
-   for (int i=0; i<legs; i++) {
-     line(legX, y+20, legX-10, y+35);
-     legX += 10;
-   }
-    stroke(0);
-    strokeWeight(3); 
-    fill(200,200,0); 
-    text( name, x-w/3, y-10+h/4 ); 
-    fill(0); 
-    text( legs, x+2-w/5, y+h/3 ); 
-    fill(255); 
-  } 
- boolean hit( float xx, float yy ) {return dist( xx,yy, x,y ) < h;}
-}
-///Sort Squid x coordinates
+ ///Sort Squid x coordinates
 void sortSquidX( Squid[]a, int many ) {
   for( int m=many; m>1; m-- ) {
     int k=0;
@@ -304,19 +239,69 @@ void swapBoat( Boat[] a, int j, int k ) {
 }
 
 
-  
-  
-  
-  
-  
-  
-  
-  
-  
+    
 
 
 
+////Classes
+class Squid {
+  float x,y;
+  float dx=0, dy=0; 
+  float w=40, h=40;
+  int legs=10; 
+  String name= "";
+  float r,g,b;
+  int count=0;
+///Constructors
+ Squid( String s, float x) {
+    this.name= s;
+    this.x=x;
+    bottom();
+    ///
+    r= int(random(100, 255));
+    g= int(random(0, 100));
+    b= int(random(100, 250));
+ }
+ ///
+  void bottom(){
+    y= height - h;
+    dy= -random( 0.1, 0.9);
+    legs= int( random(1,6));
+  }
+   void move() {
+     count++;
+     x += dx;
+     y += dy;
+     if (y>height) {bottom(); count++; }
+     else if (y<surface) { dy= -3 * dy; }
+   }
 
+///display
+ void show() {
+   fill(r,g,b);
+   stroke(r,g,b);
+   ellipse(x,y, 40, 30);
+   rect( x-40/2, y, 40, 30/2);
+///legs
+   stroke(r,g,b);
+   strokeWeight(3);
+   float legX = x-20;
+   for (int i=0; i<legs; i++) {
+     line(legX, y+20, legX-10, y+35);
+     legX += 10;
+   }
+    stroke(0);
+    strokeWeight(3); 
+    fill(200,200,0); 
+    text( name, x-w/3, y-10+h/4 ); 
+    fill(0); 
+    text( legs, x+2-w/5, y+h/3 ); 
+    fill(255); 
+  } 
+ boolean hit( float xx, float yy ) {return dist( xx,yy, x,y ) < h;}
+}
+  
+  
 class Boat {
   float x, y=surface;
   float dx, dy;
