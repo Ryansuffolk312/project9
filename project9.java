@@ -26,9 +26,24 @@ void reset() {
   for (int i=0; i<many; i++ ) {school[i]= new Squid( names[i], x ); x += spacing;}  
   for (int i=0; i<alot; i++) {fleet[i]=   new Boat( titles[i], 100);}
 }
+
+///Handlers: Keys
+void keyPressed() {
+  if (key == 'X') {sortSquidX(school, school.length);}
+  if (key == 'Y') {sortSquidY(school, school.length);}
+  if (key == 'S') {sortSquidDY(school, school.length);}
+  if (key == 'L') {sortSquidLegs(school, school.length);}
+  if (key == 'B') {sortBoatX(fleet, fleet.length);}
+  if (key == 'D') {sortBoatDX(fleet, fleet.length);}
+  if (key == 'F') {sortBoatStorage(fleet, fleet.length);}
+  if (key == 'r') {reset();}
+  if (key == 'q') {exit();}
+}
+
 ///Next Frames
  void draw() {
   scene();
+  //messages();
  if (key >= 'A' && key <= 'Z') {
     manifest(fleet, fleet.length);
     ecology( school, school.length);
@@ -72,7 +87,7 @@ void manifest(  Boat[] n, int alot ) {
   //
  for(int i=0; i<alot; i++){
   y += 15;
-  text( i, x, y );
+  //text( i, x, y );
   text( n[i].name, x+20, y );
   text( n[i].storage, x+70, y );
   text( n[i].x, x+100, y );
@@ -94,7 +109,7 @@ void manifest(  Boat[] n, int alot ) {
   //
  for(int i=0; i<many; i++){
   y += 15;
-  text( i, x, y );
+ // text( i, x, y );
   text( w[i].name, x+20, y );
   text( w[i].legs, x+70, y );
   text( w[i].x, x+100, y );
@@ -168,6 +183,138 @@ class Squid {
   } 
  boolean hit( float xx, float yy ) {return dist( xx,yy, x,y ) < h;}
 }
+///Sort Squid x coordinates
+void sortSquidX( Squid[]a, int many ) {
+  for( int m=many; m>1; m-- ) {
+    int k=0;
+    for( int j=1; j<m; j++) { 
+          if (a[j].x > a[k].x) k=  j;
+    }
+    swapSquid( a, m-1, k);
+  }
+}
+///Sort Y coordinates
+void sortSquidY( Squid[]a, int many ) {
+  for( int m=many; m>1; m-- ) {
+    int k=0;
+    for( int j=1; j<m; j++) { 
+          if (a[j].y > a[k].y) k=  j;
+    }
+    swapSquid( a, m-1, k);
+  }
+}
+
+void sortSquidLegs( Squid[]a, int many ) {
+  for( int m=many; m>1; m-- ) {
+    int k=0;
+    for( int j=1; j<m; j++) { 
+          if (a[j].legs > a[k].legs) k=  j;
+    }
+    swapSquid( a, m-1, k);
+  }
+}
+
+void sortSquidDY( Squid[]a, int many ) {
+  for( int m=many; m>1; m-- ) {
+    int k=0;
+    for( int j=1; j<m; j++) { 
+          if (a[j].dy > a[k].dy) k=  j;
+    }
+    swapSquid( a, m-1, k);
+  }
+}
+
+void swapSquid( Squid[] a, int j, int k ) {
+  float tmp;
+  int   tmp2;
+  String tmp3;
+  
+  tmp=  a[j].x;
+  a[j].x=  a[k].x;
+  a[k].x=  tmp;
+
+  tmp=  a[j].y;
+  a[j].y=  a[k].y;
+  a[k].y=  tmp;
+  
+  tmp=  a[j].dy;
+  a[j].dy=  a[k].dy;
+  a[k].dy=  tmp;
+  
+  tmp2=  a[j].legs;
+  a[j].legs=  a[k].legs;
+  a[k].legs=  tmp2;
+  
+  tmp3=  a[j].name;
+  a[j].name=  a[k].name;
+  a[k].name=  tmp3;
+}
+
+///Sort Boat x coordinates
+void sortBoatX( Boat[]a, int many ) {
+  for( int m=many; m>1; m-- ) {
+    int k=0;
+    for( int j=1; j<m; j++) { 
+          if (a[j].x > a[k].x) k=  j;
+    }
+    swapBoat( a, m-1, k);
+  }
+}
+
+void sortBoatStorage( Boat[]a, int many ) {
+  for( int m=many; m>1; m-- ) {
+    int k=0;
+    for( int j=1; j<m; j++) { 
+          if (a[j].storage > a[k].storage) k=  j;
+    }
+    swapBoat( a, m-1, k);
+  }
+}
+
+void sortBoatDX( Boat[]a, int many ) {
+  for( int m=many; m>1; m-- ) {
+    int k=0;
+    for( int j=1; j<m; j++) { 
+          if (a[j].dy > a[k].dy) k=  j;
+    }
+    swapBoat( a, m-1, k);
+  }
+}
+
+void swapBoat( Boat[] a, int j, int k ) {
+  float tmp;
+  int   tmp2;
+  String tmp3;
+  
+  tmp=  a[j].x;
+  a[j].x=  a[k].x;
+  a[k].x=  tmp;
+  
+  tmp=  a[j].dx;
+  a[j].dy=  a[k].dy;
+  a[k].dy=  tmp;
+  
+  tmp2=  a[j].storage;
+  a[j].storage=  a[k].storage;
+  a[k].storage=  tmp2;
+  
+  tmp3=  a[j].name;
+  a[j].name=  a[k].name;
+  a[k].name=  tmp3;
+}
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
 
 
 class Boat {
