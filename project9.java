@@ -1,4 +1,5 @@
 ////Ryan Rosario
+////CST-112
 ////Project-9
 
 int many=5;
@@ -7,10 +8,19 @@ Squid school[]=  new Squid[many];
 Boat  fleet[]=   new Boat[alot];
 String names[]=  { "Cali", "Mari", "Bloop", "Ward", "Tenta"};
 String titles[]= {"RedL", "JackD", "RivR", "Spira"};
+
 float spacing;
 float ocean;
-
 float surface;
+
+String title= "CST112: Project 9";
+String instr1= "Hold Shift and press any key to show list. Press 'r' to reset, 'q' to exit";
+String instr2= "Press 'B' to sort x, 'D' to sort dx, and 'F' to sort Storage";
+String instr3= "Press 'X' to sort x, 'Y' to sort y, 'S' to sort dy, and 'L' to sort Legs";
+String author="Ryan Rosario";
+
+float sunX=0, sunY=100, sunDX=2;
+
 int score=0;
 
 ////Setup
@@ -43,10 +53,11 @@ void keyPressed() {
 ///Next Frames
  void draw() {
   scene();
-  //messages();
+  messages();
  if (key >= 'A' && key <= 'Z') {
     manifest(fleet, fleet.length);
     ecology( school, school.length);
+    listInfo();
   }
   else 
   action();
@@ -58,7 +69,12 @@ void scene() {
   background( 0,150,200 );      
   fill( 0,50,100 );
   noStroke();
-  rect( 0,surface, width, height-surface );  
+  rect( 0,surface, width, height-surface );
+  fill(#E8BE13);
+  
+  ellipse( sunX, sunY, 50, 50);
+  sunX += sunDX;
+  if(sunX>width) { sunX= 0;}
 }
 
 void action() {
@@ -160,29 +176,13 @@ void sortSquidDY( Squid[]a, int many ) {
 }
 
 void swapSquid( Squid[] a, int j, int k ) {
-  float tmp;
-  int   tmp2;
-  String tmp3;
+ 
+  Squid t;
+  t= a[k];
+  a[k]= a[j];
+  a[j]= t;
   
-  tmp=  a[j].x;
-  a[j].x=  a[k].x;
-  a[k].x=  tmp;
-
-  tmp=  a[j].y;
-  a[j].y=  a[k].y;
-  a[k].y=  tmp;
-  
-  tmp=  a[j].dy;
-  a[j].dy=  a[k].dy;
-  a[k].dy=  tmp;
-  
-  tmp2=  a[j].legs;
-  a[j].legs=  a[k].legs;
-  a[k].legs=  tmp2;
-  
-  tmp3=  a[j].name;
-  a[j].name=  a[k].name;
-  a[k].name=  tmp3;
+ 
 }
 
 ///Sort Boat x coordinates
@@ -210,32 +210,35 @@ void sortBoatDX( Boat[]a, int many ) {
   for( int m=many; m>1; m-- ) {
     int k=0;
     for( int j=1; j<m; j++) { 
-          if (a[j].dy > a[k].dy) k=  j;
+          if (a[j].dx > a[k].dx) k=  j;
     }
     swapBoat( a, m-1, k);
   }
 }
 
 void swapBoat( Boat[] a, int j, int k ) {
-  float tmp;
-  int   tmp2;
-  String tmp3;
   
-  tmp=  a[j].x;
-  a[j].x=  a[k].x;
-  a[k].x=  tmp;
-  
-  tmp=  a[j].dx;
-  a[j].dy=  a[k].dy;
-  a[k].dy=  tmp;
-  
-  tmp2=  a[j].storage;
-  a[j].storage=  a[k].storage;
-  a[k].storage=  tmp2;
-  
-  tmp3=  a[j].name;
-  a[j].name=  a[k].name;
-  a[k].name=  tmp3;
+  Boat t;
+  t= a[k];
+  a[k]= a[j];
+  a[j]= t;
+}
+
+void messages(){
+  textSize(20);
+  fill(0);
+  text(title, width/2.5, 20);
+  textSize(14);
+  text(instr1, width/4.5, 40);
+  text(author, 20, height-20);
+  //
+  textSize(12);
+}
+
+void listInfo(){
+  textSize(14);
+  text(instr2, width/6, 195); 
+  text(instr3, width/6, 355);
 }
 
 
@@ -287,7 +290,8 @@ class Squid {
    strokeWeight(3);
    float legX = x-20;
    for (int i=0; i<legs; i++) {
-     line(legX, y+20, legX-10, y+35);
+   if(frameCount % 40 > 15) {line(legX, y+20, legX-10, y+35);}
+   else                     {line(legX, y+20, legX+10, y+35);}
      legX += 10;
    }
     stroke(0);
@@ -335,6 +339,7 @@ class Boat {
     rect( x, surface-20, 50, 20 ); 
     if (dx>0)   {triangle( x+50,surface, x+50,surface-20, x+70,surface-20 );} 
     else        {triangle( x,surface, x,surface-20, x-20,surface-20 );} 
+    fill(#905E37);
     rect( x+12, surface-30, 5, 10 );       
     ///sails
     fill(255); 
@@ -347,6 +352,7 @@ class Boat {
     text( storage, x+30, surface); 
  }
 }
+  
    
 
    
